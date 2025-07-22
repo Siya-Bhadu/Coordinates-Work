@@ -36,15 +36,12 @@ def geodetic_to_local(origin_lat, origin_lon, target_lat, target_lon):
 
 
 def main():
-    
-    df = pd.read_csv("apmuas_data/global_data.csv")
-
     # Extract GPS data
     latitudes = df['latitude']
     longitudes = df['longitude']
 
     # Use the first point as origin
-    origin_lat = latitudes.iloc[0]
+    origin_lat:float = latitudes.iloc[0]
     origin_lon = longitudes.iloc[0]
     local_waypoint_x, local_waypoint_y = geodetic_to_local(origin_lat, origin_lon, 38.6962666, -94.2580533)
 
@@ -68,17 +65,58 @@ def main():
     y = df['y_local']
 
 
-    plt.figure(figsize=(10, 10))
-    plt.plot(df['x_local'], df['y_local'], marker='o', linestyle='-', color='blue', label='Trajectory')
-    #plt.plot(local_waypoint_x, local_waypoint_y, 'ro', markersize=8, label='Waypoint')
-    plt.title("Drone Trajectory in Local Coordinates")
-    plt.xlabel("East (meters)")
-    plt.ylabel("North (meters)")
-    plt.legend()
-    plt.axis('equal')  # Preserve aspect ratio so scale is correct
-    plt.grid(True)
-    plt.show()
 
 if __name__ == '__main__':
     main()
 
+
+# Look over Aarohi's GitHub Repositories
+# Download ArduPilot -> DONE
+# Install Docker
+# Docker & ROS2 Slides Review + Research Additional Information
+# Code above is converting Waypoints set in Coordinates (Longitude, Latitude)  -> Cartesian (x, y)
+# Goal is explained below
+
+'''
+The above code already does lat long (coordinates) to x,y (cartesian) so alter the body and the functions to work with the lists
+The functions only work with 1 origin and 1 target lat and long
+Change it to work with an inputted list, don't forget to type hint each variable (int, float, str, etc.)
+
+say your function takes in a list of lists: [[20,30], [60,70], [100,100]]
+you want to return a list of lists that is in lat and long
+
+Example Aarohi Gave for Hard Coding a list of (real world) coordinates (cartesian for inverse): 
+
+from typing import List, Any, Dict
+
+def main() -> None: 
+    print("Hello World")   
+    coord_list:List[List[float, float]] = [[1.345566,45.67464], [54.656546, 65.35474747]]
+
+if __name__ == '__main__':
+    main()
+
+
+Other:
+
+
+def main() -> None:
+    # Pre-defined list of [latitude, longitude]
+    gps_coordinates: List[List[float]] = [
+        [38.6956965, -94.2573627],  # Origin
+        [38.6962666, -94.2580533],
+        [38.6967000, -94.2590000]
+    ]
+
+    local_xy: List[List[float]] = convert_all_to_local(gps_coordinates)
+
+    print("Local X/Y Coordinates:")
+    for xy in local_xy:
+        print(f"X: {xy[0]:.2f}, Y: {xy[1]:.2f}")
+
+if __name__ == '__main__':
+    main()
+
+
+
+'''
